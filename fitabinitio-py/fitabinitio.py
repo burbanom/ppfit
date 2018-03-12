@@ -34,7 +34,7 @@ for dict_name, value in config_read.items():
 training_set = Training_Set(config )
 
 fitting_parameters = Fitting_Parameter_Set.from_parameters_file( 'PARAMS' )
-potential_file = Potential_File( 'template_BaTiO3', fitting_parameters )
+potential_file = Potential_File( 'potential_template', fitting_parameters )
 
 chi_squared_scaling = { 'forces':   options[ 'scaling' ][ 'forces' ],
                         'dipoles':  options[ 'scaling' ][ 'dipoles' ],

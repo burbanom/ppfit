@@ -1,4 +1,4 @@
-# The total chi sq is: 0.2456823
+# Variable name, initial value, 1 for fit - zero to fix, lower bound, upper bound, step size
 ALPHAO	13.5006767	1	6.0000000	100.0000000	0.1000000
 AOO	10.2459669	1	0.0000000	11.5000000	0.1000000
 BOO	1.1841113	1	0.0000000	1200.0000000	0.1000000

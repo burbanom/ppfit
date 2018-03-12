@@ -1,4 +1,8 @@
+# In this file we specify the species present in each configuration
+# We specify the folders where the reference data are found
+# and where the single point calculations will be performed
 cubic:
+    # Make sure the species  
     species:
         - Ba
         - Ti
@@ -6,6 +10,7 @@ cubic:
     directory:     configs/cubic/
     runtime_file:  runtime_cubic.inpt
     restart_file:  restart_cubic.dat
+    # these are the reference data from DFT calculations
     forces_file:   cubic.force
     dipoles_file:  cubic.dip
     stresses_file: cubic.stress
@@ -18,6 +23,7 @@ tet:
     directory:     configs/tet/
     runtime_file:  runtime_tet.inpt
     restart_file:  restart_tet.dat
+    # these are the reference data from DFT calculations
     forces_file:   tet.force
     dipoles_file:  tet.dip
     stresses_file: tet.stress
@@ -30,6 +36,7 @@ rhombo:
     directory:     configs/rhombo/
     runtime_file:  runtime_rhombo.inpt
     restart_file:  restart_rhombo.dat
+    # these are the reference data from DFT calculations
     forces_file:   rhombo.force
     dipoles_file:  rhombo.dip
     stresses_file: rhombo.stress

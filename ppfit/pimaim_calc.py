@@ -29,8 +29,10 @@ class PIMAIM_Run:
         new_potential_file = os.path.join( self.configuration.directory, 'potential.inpt' ) 
         with open( new_potential_file, 'w' ) as f:
             [ f.write( l )for l in lines if include_in_potential_file( l, self.configuration.species ) ] 
-        for f in os.listdir( self.common_input_dir ):
-            copyfile( os.path.join( self.common_input_dir, f ), os.path.join( self.configuration.directory, f ) )
+        # Removed this option because it might cause trouble when dealing with systems that do not have the same
+        # number of species 
+        #for f in os.listdir( self.common_input_dir ):
+        #    copyfile( os.path.join( self.common_input_dir, f ), os.path.join( self.configuration.directory, f ) )
         os.chdir( self.configuration.directory )
         self.clean_dir()
         copyfile( self.configuration.runtime, 'runtime.inpt' )
