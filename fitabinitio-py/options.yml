@@ -1,53 +1,112 @@
+######    Options for Serial version, with mpi executable code    ######
+#calculation:
+#    code: pimaim
+#    exec: ~/bin/pimaim_mpi/pimaim_mpi
+#    code_mpi: True
+#    mpi_exec: mpiexec.hydra
+#    run_configs: serial
+#    mpi_np: -np
+#    exec_proc: 8
+#    mpi_options: -f
+
+#####      Options for pool version, with several instances of mpi executable code (single node)   #######
+
+#calculation:
+#    code: pimaim
+#    exec: ~/bin/pimaim_mpi/pimaim_mpi
+#    code_mpi: True
+#    mpi_exec: mpiexec.hydra
+#    run_configs: pool
+#    mpi_np: -np
+#    exec_proc: 2
+#    mpi_options: -genv I_MPI_FABRICS=dapl,ofa,tcp,tmi,ofi -f
+
+#####      Options for mpi4py version, with several instances of mpi executable code (multiple nodes)  #######
+
 calculation:
     code: pimaim
-    exec: mpirun -np 16 pimaim_mpi
+    exec: /local/home/mburbano/Dropbox/Work/Source/pimaim/classique/pimaim.exe
+    code_mpi: True 
+    run_configs: serial #serial, pool or mpi4py
+    mpi_exec: mpirun # mpiexec #mpirun executable for serial and pool runs (mpi4py spawn will handle this otherwise)
+    mpi_np: -np          # string for number of processes
+    exec_proc: 1    # execute each instance of code over exec_proc processes
+    mpi_options: -f 
+#    no_nodes:  1            # number of nodes
+#                             #  ^ mpi options for main call to mpi config run. 
+#                             # Restrict processes to run node by node in round robin
+#                             # last bit -f gives the flag for the host filei
+#    no_cpu_node: 1          # number of cpus per node
+#    no_slaves: 0            # number of workers. Total no of mpi proc to request in submission is no_slaves + 1(master)
 
+
+    
 # scaling factors for the forces, dipoles and stresses
 scaling:
-    forces: 20
-    dipoles: 15
-    stresses: 2
-
-calc_order: 0
+    forces: 20.00
+    dipoles: 10.00
+    stresses: 5.0
 
 verbose: True
 
-# optimization parameters supported:
-#    CG
-#    Nelder-Mead
-#    L-BFGS-B (bounded)
-#    Particle-Swarm
-
+# Nelder-Mead options
 method: Nelder-Mead
-
 tolerance:
-    ftol: 1e-4
-    gtol: 1e-2
-    xtol: 1e-2 # xtot is available for Nelder-Mead only
-    
-maxiter: 500
+    xtol: 0.0001   # Relative error in solution xopt acceptable for convergence
+    ftol: 0.0001   # Relative error in fun(xopt) acceptable for convergence
+maxfev: 1000      # Maximum number of funtion evaluations to make
+maxiter: 1000     # Maximum number of iterations to perform
 
-# step size for minimization algos like BFGS or CG
-stepsize_min: 1e-4
+# CG options
+#method: CG
+#stepsize: 0.0001  # stepsize to approximate gradient - must be small
+#tolerance:
+#    gtol: 0.001  # Gradient norm must be less than gtol before successful termination
+#    ftol: 0.001
+#maxiter: 1     # maximum number of iterations to perform
 
-use_basin_hopping: True
+# L-BFGS-B options
+#method: L-BFGS-B
+#tolerance:         
+#    ftol: 0.001   # convergence tolerance
+#    gtol: 0.001   # convergence tolerance
+#maxiter:  5       # max number of function evaluations
+#stepsize: 0.0005  #jacobian calc stepsize
+# ---- BASIN HOPPING -----
+
+use_basin_hopping: True 
 
 # Basin hopping parameters   #
 basin_hopping:
-    calc_order: 1 # Optimization order: 0 for minimization then BH, 1 for BH then minimization
-    niter: 100 # number of BH iterations
+    calc_order: 0      # Optimization order: 0 for minimization then BH, 1 for BH then minimization
+    niter: 100         # Number of BH iterations
+    temperature: 15.0
+    timestep: 1.00   # Initial step size for use in BH random displacement. 
+                     # Recommended 1.00 since steps are in PARAMS file
+    niter_success: 5 # max numb of iterations at a minimum
+
+    #----- Minimiser parameters ( parameters above used in intial step if calc_order=0) -----
     method: Nelder-Mead
-    # Parameters for the minimizer used by BH
-    maxiter: 200
     tolerance:
-        ftol: 1e-2
-        gtol: 1e-1
-        # xtot (xtol?) is available for Nelder-Mead only
-        xtol: 1e-2
-    # step size for minimization algos like BFGS or CG
-    stepsize: 1e-4
-    temperature: 5.00
-    # Recommended timestep is 1.00 for BH given that steps are provided in the PARAMS file
-    timestep: 1.00
-    # max numb of iterations at a minimum
-    niter_success: 10
+        xtol: 0.0001   # Relative error in solution xopt acceptable for convergence
+        ftol: 0.0001   # Relative error in fun(xopt) acceptable for convergence
+    maxfev: 1000     # Maximum number of funtion evaluations to make
+    maxiter: 1000    # Maximum number of iterations to perform
+    verbose: True     # Print convergence messages
+
+    # CG options
+#    method: CG
+#    stepsize: 0.000000005  # stepsize to approximate gradient - must be small
+#    tolerance:
+#        gtol: 0.001  # Gradient norm must be less than gtol before successful termination
+#    maxiter: 100     # maximum number of iterations to perform
+#    verbose: True    # Print convergence messages
+
+    # L-BFGS-B options
+#    method: L-BFGS-B
+#    stepsize: 0.000000005
+#    tolerance:
+#        ftol: 0.001   # convergence tolerance
+#        gtol: 0.001   # convergence tolerance
+#    maxiter:  100     # max number of function evaluations
+#    verbose:  True    # Print convergence messages

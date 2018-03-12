@@ -43,10 +43,5 @@ epp           Type of Run II (epp,cim,aim)
 .false.     Isotropic barostat?
 .false.     Anisotropic barostat?
 .false.     Orthorhombic cell?
-.false.     Temperature ramp?
-.false.     Pressure ramp?
-.false.     VBC?
+.false.     Slab correction 
 .true.     verbose
-.false.     stop_on_error
-.false.     fshift potential?
-.false.     flush output?
