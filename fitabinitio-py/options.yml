@@ -49,64 +49,39 @@ scaling:
 
 verbose: True
 
-# Nelder-Mead options
-method: Nelder-Mead
-tolerance:
-    xtol: 0.0001   # Relative error in solution xopt acceptable for convergence
-    ftol: 0.0001   # Relative error in fun(xopt) acceptable for convergence
-maxfev: 1000      # Maximum number of funtion evaluations to make
-maxiter: 1000     # Maximum number of iterations to perform
-
-# CG options
-#method: CG
-#stepsize: 0.0001  # stepsize to approximate gradient - must be small
-#tolerance:
-#    gtol: 0.001  # Gradient norm must be less than gtol before successful termination
-#    ftol: 0.001
-#maxiter: 1     # maximum number of iterations to perform
-
-# L-BFGS-B options
-#method: L-BFGS-B
-#tolerance:         
-#    ftol: 0.001   # convergence tolerance
-#    gtol: 0.001   # convergence tolerance
-#maxiter:  5       # max number of function evaluations
-#stepsize: 0.0005  #jacobian calc stepsize
-# ---- BASIN HOPPING -----
-
-use_basin_hopping: True 
+#use_basin_hopping: True 
 
 # Basin hopping parameters   #
 basin_hopping:
-    calc_order: 0      # Optimization order: 0 for minimization then BH, 1 for BH then minimization
-    niter: 100         # Number of BH iterations
+    niter: 0        # Number of BH iterations
     temperature: 15.0
     timestep: 1.00   # Initial step size for use in BH random displacement. 
                      # Recommended 1.00 since steps are in PARAMS file
-    niter_success: 5 # max numb of iterations at a minimum
+    niter_success: 1 # max numb of iterations at a minimum
 
     #----- Minimiser parameters ( parameters above used in intial step if calc_order=0) -----
-    method: Nelder-Mead
-    tolerance:
-        xtol: 0.0001   # Relative error in solution xopt acceptable for convergence
-        ftol: 0.0001   # Relative error in fun(xopt) acceptable for convergence
-    maxfev: 1000     # Maximum number of funtion evaluations to make
-    maxiter: 1000    # Maximum number of iterations to perform
-    verbose: True     # Print convergence messages
-
-    # CG options
-#    method: CG
-#    stepsize: 0.000000005  # stepsize to approximate gradient - must be small
-#    tolerance:
-#        gtol: 0.001  # Gradient norm must be less than gtol before successful termination
-#    maxiter: 100     # maximum number of iterations to perform
-#    verbose: True    # Print convergence messages
+    #method: 
+    #    name: Nelder-Mead
+    #    tolerance:
+    #        xtol: 1e-10    # Relative error in solution xopt acceptable for convergence
+    #        ftol: 1e-10   # Relative error in fun(xopt) acceptable for convergence
+    #    maxfev: 1     # Maximum number of funtion evaluations to make
+    #    maxiter: 1000    # Maximum number of iterations to perform
 
     # L-BFGS-B options
-#    method: L-BFGS-B
-#    stepsize: 0.000000005
-#    tolerance:
-#        ftol: 0.001   # convergence tolerance
-#        gtol: 0.001   # convergence tolerance
-#    maxiter:  100     # max number of function evaluations
-#    verbose:  True    # Print convergence messages
+    #method: 
+    #    name: L-BFGS-B
+    #    stepsize: 0.000000005  # stepsize to approximate gradient - must be small
+    #    tolerance:
+    #        ftol: 0.001  # Gradient norm must be less than gtol before successful termination
+    #        gtol: 0.001  # Gradient norm must be less than gtol before successful termination
+    #    maxiter: 100     # maximum number of iterations to perform
+
+    # CG options
+    method: 
+        name: CG 
+        stepsize: 0.000000005
+        tolerance:
+            ftol: 0.001   # convergence tolerance
+            gtol: 0.001   # convergence tolerance
+        maxiter:  100     # max number of function evaluations

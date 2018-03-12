@@ -107,7 +107,7 @@ class sumOfChi:
         factorTot = sum( self.scaling.values() )
         totalChi = sum( [ self.scaling[ k ] * chiSq[ k ] for k in chiSq.keys() ] ) / factorTot
  
-        output( 'iteration: ' + str( self.times_called ) + '\n' )
+        output( 'Function call number: ' + str( self.times_called ) + '\n' )
         output( 'Forces chi sq: ' + fmt.format(chiSq[ 'forces' ]) + '\n')
         output( 'Dipoles chi sq: ' + fmt.format(chiSq[ 'dipoles' ]) +'\n')
         output( 'Stresses chi sq: ' + fmt.format(chiSq[ 'stresses' ]) + '\n')
