@@ -24,64 +24,73 @@
 #####      Options for mpi4py version, with several instances of mpi executable code (multiple nodes)  #######
 
 calculation:
+    # Currently working for pimaim only
     code: pimaim
+    # path to your executable
     exec: /local/home/mburbano/Dropbox/Work/Source/pimaim/classique/pimaim.exe
+    # MPI BLOCK
+    # Interesting if each single point calculation is time consuming
+    # does your code use mpi?
     code_mpi: True 
     run_configs: serial #serial, pool or mpi4py
     mpi_exec: mpirun # mpiexec #mpirun executable for serial and pool runs (mpi4py spawn will handle this otherwise)
     mpi_np: -np          # string for number of processes
     exec_proc: 1    # execute each instance of code over exec_proc processes
     mpi_options: -f 
-#    no_nodes:  1            # number of nodes
-#                             #  ^ mpi options for main call to mpi config run. 
-#                             # Restrict processes to run node by node in round robin
-#                             # last bit -f gives the flag for the host filei
-#    no_cpu_node: 1          # number of cpus per node
-#    no_slaves: 0            # number of workers. Total no of mpi proc to request in submission is no_slaves + 1(master)
+    # END MPI BLOCK
 
 
     
 # scaling factors for the forces, dipoles and stresses
 scaling:
+    # adjust scaling according to the number of points that each property has and also
+    # according to the intrinsic errors in the reference data
     forces: 20.00
     dipoles: 10.00
     stresses: 5.0
 
+# print information about minimization progress
 verbose: True
 
-#use_basin_hopping: True 
-
 # Basin hopping parameters   #
+# As of 12 March 2018 three minimization algorithms are working:
+# - L-BFGS-B
+# - CG
+# - Nelder-Mead
+# If you start from 'crude' values for the parameters, use NM first.
+# Once you have a better idea of where the global minimum is change to 
+# either L-BFGS-B or CG.
 basin_hopping:
-    niter: 0        # Number of BH iterations
-    temperature: 15.0
+    # https://docs.scipy.org/doc/scipy/reference/optimize.html
+    niter: 1000        # Number of BH iterations
+    temperature: 15.0 # scaling factor for the BH acceptance condition
     timestep: 1.00   # Initial step size for use in BH random displacement. 
                      # Recommended 1.00 since steps are in PARAMS file
-    niter_success: 1 # max numb of iterations at a minimum
+    niter_success: 10 # max numb of iterations at a minimum
 
-    #----- Minimiser parameters ( parameters above used in intial step if calc_order=0) -----
+    #----- Minimiser parameters
     #method: 
     #    name: Nelder-Mead
     #    tolerance:
-    #        xtol: 1e-10    # Relative error in solution xopt acceptable for convergence
-    #        ftol: 1e-10   # Relative error in fun(xopt) acceptable for convergence
-    #    maxfev: 1     # Maximum number of funtion evaluations to make
-    #    maxiter: 1000    # Maximum number of iterations to perform
+    #        xtol: 1e-04   # Relative error in solution xopt acceptable for convergence
+    #        ftol: 1e-04   # Relative error in fun(xopt) acceptable for convergence
+    #    maxfev: 1000      # Maximum number of funtion evaluations to make
+    #    maxiter: 10000     # Maximum number of iterations to perform
 
     # L-BFGS-B options
     #method: 
     #    name: L-BFGS-B
-    #    stepsize: 0.000000005  # stepsize to approximate gradient - must be small
+    #    stepsize: 1e-08  # stepsize to approximate gradient - must be small
     #    tolerance:
-    #        ftol: 0.001  # Gradient norm must be less than gtol before successful termination
-    #        gtol: 0.001  # Gradient norm must be less than gtol before successful termination
-    #    maxiter: 100     # maximum number of iterations to perform
+    #        ftol: 1e-04   # Relative error in fun(xopt) acceptable for convergence
+    #        gtol: 1e-02  # Gradient norm must be less than gtol before successful termination
+    #    maxiter: 10000     # maximum number of iterations to perform
 
     # CG options
     method: 
         name: CG 
-        stepsize: 0.000000005
+        stepsize: 1e-08 
         tolerance:
-            ftol: 0.001   # convergence tolerance
-            gtol: 0.001   # convergence tolerance
-        maxiter:  100     # max number of function evaluations
+            ftol: 1e-04   # Relative error in fun(xopt) acceptable for convergence
+            gtol: 1e-02  # Gradient norm must be less than gtol before successful termination
+        maxiter:  10000     # max number of function evaluations
